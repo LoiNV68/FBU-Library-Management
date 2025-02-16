@@ -11,9 +11,9 @@ use Illuminate\Support\Facades\Route;
 
 
 Route::middleware(['ShareData'])->group(function () {
+
     Route::get('/login', [loginController::class, 'login'])->name('login');
     Route::post('/login', [loginController::class, 'handleLogin'])->name('handle-login');
-
 });
 
 Route::middleware(['CheckLogin', 'ShareData'])->group(function () {

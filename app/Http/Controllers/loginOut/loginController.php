@@ -21,6 +21,9 @@ class loginController extends Controller
 
     public function login()
     {
+        if (Auth::check()) {
+            return redirect()->route('home');
+        }
         $layout = true;
         // dd(Hash::make('123'));
         return view('login.login', compact('layout'));
