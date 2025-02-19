@@ -1,9 +1,9 @@
 @extends('layout.main')
 @section('title')
-    {{$title}}
+    {{ $title }}
 @endsection
 @section('titleWeb')
-    {{$titleWeb}}
+    {{ $titleWeb }}
 @endsection
 @section('content')
     <!-- Thống kê quản lý sách -->
@@ -13,22 +13,22 @@
             <!-- Tổng số sách -->
             <div class="bg-gray-50 p-6 rounded-lg shadow-sm">
                 <h3 class="text-lg font-semibold text-gray-700">Tổng số sách</h3>
-                <p class="text-3xl font-bold text-primary">1,234</p>
+                <p class="text-3xl font-bold text-primary">{{ $totalBooks }}</p>
             </div>
             <!-- Sách sẵn sàng cho mượn -->
             <div class="bg-gray-50 p-6 rounded-lg shadow-sm">
                 <h3 class="text-lg font-semibold text-gray-700">Sách sẵn sàng cho mượn</h3>
-                <p class="text-3xl font-bold text-primary">567</p>
+                <p class="text-3xl font-bold text-primary">{{ $availableBooks }}</p>
             </div>
             <!-- Sách đang mượn -->
             <div class="bg-gray-50 p-6 rounded-lg shadow-sm">
                 <h3 class="text-lg font-semibold text-gray-700">Sách đang mượn</h3>
-                <p class="text-3xl font-bold text-primary">567</p>
+                <p class="text-3xl font-bold text-primary">{{ $borrowedBooks }}</p>
             </div>
             <!-- Sách bị mất, hỏng lý do khác-->
             <div class="bg-gray-50 p-6 rounded-lg shadow-sm">
                 <h3 class="text-lg font-semibold text-gray-700">Sách bị mất, hỏng lý do khác</h3>
-                <p class="text-3xl font-bold text-primary">89</p>
+                <p class="text-3xl font-bold text-primary">{{ $brokenBooks }}</p>
             </div>
         </div>
         <!-- Biểu đồ cho thống kê sách -->
@@ -45,22 +45,22 @@
             <!-- Tổng số bạn đọc -->
             <div class="bg-gray-50 p-6 rounded-lg shadow-sm">
                 <h3 class="text-lg font-semibold text-gray-700">Tổng số bạn đọc</h3>
-                <p class="text-3xl font-bold text-primary">456</p>
+                <p class="text-3xl font-bold text-primary">{{ $totalReaders }}</p>
             </div>
             <!-- Bạn đọc đang mượn -->
             <div class="bg-gray-50 p-6 rounded-lg shadow-sm">
                 <h3 class="text-lg font-semibold text-gray-700">Bạn đọc đang mượn</h3>
-                <p class="text-3xl font-bold text-primary">123</p>
+                <p class="text-3xl font-bold text-primary">{{ $borrowedReaders }}</p>
             </div>
             <!-- Bạn đọc mới (tháng) -->
             <div class="bg-gray-50 p-6 rounded-lg shadow-sm">
                 <h3 class="text-lg font-semibold text-gray-700">Bạn đọc mới (tháng)</h3>
-                <p class="text-3xl font-bold text-primary">23</p>
+                <p class="text-3xl font-bold text-primary">{{ $newReaders }}</p>
             </div>
             <!-- Bạn đọc vi phạm -->
             <div class="bg-gray-50 p-6 rounded-lg shadow-sm">
                 <h3 class="text-lg font-semibold text-gray-700">Bạn đọc vi phạm</h3>
-                <p class="text-3xl font-bold text-primary">12</p>
+                <p class="text-3xl font-bold text-primary">{{ $banedReaders }}</p>
             </div>
         </div>
         <!-- Biểu đồ cho thống kê bạn đọc -->
@@ -77,17 +77,17 @@
             <!-- Sách đã mượn -->
             <div class="bg-gray-50 p-6 rounded-lg shadow-sm">
                 <h3 class="text-lg font-semibold text-gray-700">Sách đã mượn</h3>
-                <p class="text-3xl font-bold text-primary">789</p>
+                <p class="text-3xl font-bold text-primary">{{ $borrowedBooks }}</p>
             </div>
             <!-- Sách đã trả -->
             <div class="bg-gray-50 p-6 rounded-lg shadow-sm">
                 <h3 class="text-lg font-semibold text-gray-700">Sách đã trả</h3>
-                <p class="text-3xl font-bold text-primary">654</p>
+                <p class="text-3xl font-bold text-primary">{{ $returnedBooks }}</p>
             </div>
             <!-- Sách quá hạn chưa trả -->
             <div class="bg-gray-50 p-6 rounded-lg shadow-sm">
                 <h3 class="text-lg font-semibold text-gray-700">Sách quá hạn chưa trả</h3>
-                <p class="text-3xl font-bold text-primary">45</p>
+                <p class="text-3xl font-bold text-primary">{{ $overdueBooks }}</p>
             </div>
         </div>
         <!-- Biểu đồ cho thống kê mượn/trả -->
@@ -97,6 +97,21 @@
         </div>
     </section>
 @endsection
+
 @section('scripts')
-    <script src="{{ asset('asset/js/home.js') }}"></script>
+    <script script src="{{ asset('asset/js/home.js') }}"></script>
+    <script>
+        initDashboard({
+            totalBooks: {{ $totalBooks }},
+            brokenBooks: {{ $brokenBooks }},
+            borrowedBooks: {{ $borrowedBooks }},
+            returnedBooks: {{ $returnedBooks }},
+            overdueBooks: {{ $overdueBooks }},
+            availableBooks: {{ $availableBooks }},
+            totalReaders: {{ $totalReaders }},
+            borrowedReaders: {{ $borrowedReaders }},
+            newReaders: {{ $newReaders }},
+            banedReaders: {{ $banedReaders }}
+        });
+    </script>
 @endsection

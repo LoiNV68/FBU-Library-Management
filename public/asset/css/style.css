@@ -1,6 +1,13 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
 html,
 body {
     overflow: hidden;
+}
+header {
+    height: 90px;
 }
 /* Style cho thanh cuộn */
 ::-webkit-scrollbar {
@@ -41,13 +48,15 @@ body {
     border-color: #3294c9;
 }
 
-.hover\:bg-primary:hover, .sidebar-active {
+.hover\:bg-primary:hover,
+.sidebar-active {
     background-color: #2878a5;
 }
 
 /* Sidebar gradient */
 .sidebar-gradient {
     background: #3294c9;
+    height: calc(100vh - 90px);
 }
 
 /* Full height */
@@ -72,7 +81,6 @@ body {
     color: rgba(0, 0, 0, 0.5);
 }
 
-/* Đặt trong file CSS của bạn hoặc trong <style> của layout */
 .ban {
     background-color: #fee2e2 !important; /* Nền đỏ nhạt */
     color: #b91c1c; /* Chữ đỏ đậm */
@@ -81,3 +89,77 @@ body {
     border-color: #fca5a5; /* Tùy chỉnh màu viền nếu cần */
 }
 
+/* pagination */
+.pagination {
+    display: flex;
+    justify-content: center;
+    list-style: none;
+    padding: 0;
+}
+
+.page-item {
+    margin: 0 5px;
+}
+
+.page-link {
+    padding: 5px 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    text-decoration: none;
+    color: #333;
+}
+
+.page-item.disabled .page-link {
+    color: #aaa;
+    pointer-events: none;
+}
+
+.page-item.active .page-link {
+    background-color: #2878a5;
+    color: #fff;
+    border-color: #2878a5;
+}
+
+/* endpoint */
+/* CSS cho sidebar */
+.sidebar-gradient {
+    transition: width 0.3s ease;
+}
+
+/* Thu nhỏ sidebar khi màn hình nhỏ */
+@media (max-width: 768px) {
+    .sidebar-gradient {
+        width: 64px; /* Chỉ hiển thị đủ cho icon */
+    }
+
+    .sidebar-gradient nav ul li a span {
+        display: none; /* Ẩn văn bản */
+    }
+
+    .sidebar-gradient nav ul li a {
+        justify-content: center; /* Căn giữa icon */
+    }
+
+    .sidebar-gradient nav ul li a svg {
+        margin-right: 0; /* Loại bỏ khoảng cách giữa icon và văn bản */
+    }
+}
+#toggleSidebar {
+    margin-top: 74px;
+    /* margin-left: -5px; */
+}
+.sidebar-gradient.collapsed {
+    width: 80px; /* Chỉ hiển thị đủ cho icon */
+}
+
+.sidebar-gradient.collapsed nav ul li a span {
+    display: none; /* Ẩn văn bản */
+}
+
+.sidebar-gradient.collapsed nav ul li a {
+    justify-content: center; /* Căn giữa icon */
+}
+
+.sidebar-gradient.collapsed nav ul li a svg {
+    margin-right: 0; /* Loại bỏ khoảng cách giữa icon và văn bản */
+}

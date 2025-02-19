@@ -2,14 +2,24 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
+use App\Services\LibraryStatisticsService;
+use Illuminate\View\View;
 
-class homeController extends Controller
+class HomeController extends Controller  // Sửa tên class theo PSR
 {
-    public function index()
+    public function __construct(
+        private readonly LibraryStatisticsService $libraryStats
+    ) {}
+
+    public function index(): View
     {
-        $title = 'Quản Lý Thư Viện';
-        $titleWeb = 'Quản Lý Thư Viện';
-        return view('home', compact('title', 'titleWeb'));
+        $data = [
+            'title' => 'Quản Lý Thư Viện',
+            'titleWeb' => 'Quản Lý Thư Viện',
+            ...$this->libraryStats->getStatistics()
+        ];
+        // dd($data);
+        return view('home', $data);
     }
 }

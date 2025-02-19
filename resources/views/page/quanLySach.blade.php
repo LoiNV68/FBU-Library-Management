@@ -8,16 +8,29 @@
 @section('content')
     <!-- Search Box -->
     <div class="mb-6">
-        <input type="text"
-            class="w-full max-w-md px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-primary shadow-sm"
-            placeholder="Tìm kiếm sách, mã sách, tác giả..." />
-        <button class="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition duration-300 editBookBtn">Tìm
-            kiếm</button>
-
+        <form action="{{ route('book.search') }}" method="GET" class="flex items-center gap-2">
+            <input type="text"
+                class="flex-grow max-w-md px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-primary shadow-sm"
+                placeholder="Tìm kiếm sách, mã sách, tác giả..." name="query" />
+            <button type="submit"
+                class="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition duration-300">
+                Tìm kiếm
+            </button>
+            <button type="button" id="addBookBtn"
+                class="bg-green-500 text-white px-4 py-2 rounded-lg hover:bg-green-600 transition duration-300"
+                onclick="event.preventDefault();">
+                Thêm sách
+            </button>
+            <button onclick="() => {event.preventDefault(); window.location.reload();}"
+                class="bg-amber-500 text-white px-4 py-2 w-[110px] rounded-lg hover:bg-amber-600 transition duration-300">Làm
+                mới</button>
+        </form>
     </div>
 
+
+
     <!-- Table -->
-    <div class="overflow-x-auto bg-white rounded-lg shadow-md">
+    <div class="overflow-x-auto bg-white rounded-lg shadow-md mb-4">
         <table class="w-full border-collapse">
             <thead>
                 <tr class="bg-primary text-white">
@@ -28,94 +41,131 @@
                     <th class="p-4 text-left">Tác giả</th>
                     <th class="p-4 text-left">Số lượng</th>
                     <th class="p-4 text-left">Sẵn sàng mượn</th>
+                    <th class="p-4 text-left">Sách mất hỏng</th>
                     <th class="p-4 text-left">Mô tả</th>
                     <th class="p-4 text-left">Hành động</th>
                 </tr>
             </thead>
             <tbody>
-                <tr class="border-b hover:bg-gray-50 transition duration-200">
-                    <td class="p-4">
-                        <img class="w-16 h-16 object-cover rounded-lg" src="{{ asset('asset/image/1.jpg') }}"
-                            alt="Ảnh bìa sách">
-                    </td>
-                    <td class="p-4">DC12321</td>
-                    <td class="p-4">Ứng dụng công nghệ thông tin trong dạy học</td>
-                    <td class="p-4">Giáo trình</td>
-                    <td class="p-4">ThS. Đỗ Mạnh Cường</td>
-                    <td class="p-4">10</td>
-                    <td class="p-4">10</td>
-                    <td class="p-4">200 trang</td>
-                    <td class="p-4">
-                        <div class="flex space-x-2">
-                            <button
-                                class="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition duration-300 editBookBtn">Sửa</button>
-                            <button
-                                class="bg-red-500 text-white px-4 py-2 rounded-lg hover:bg-red-600 transition duration-300 deleteBookBtn">Xóa</button>
-                        </div>
-                    </td>
-                </tr>
-                <tr class="border-b hover:bg-gray-50 transition duration-200">
-                    <td class="p-4">
-                        <img class="w-16 h-16 object-cover rounded-lg" src="{{ asset('asset/image/2.jpg') }}"
-                            alt="Ảnh bìa sách">
-                    </td>
-                    <td class="p-4">DC12321</td>
-                    <td class="p-4">Lập trình Python cơ bản</td>
-                    <td class="p-4">Giáo trình</td>
-                    <td class="p-4">TS. Nguyễn Văn A</td>
-                    <td class="p-4">15</td>
-                    <td class="p-4">12</td>
-                    <td class="p-4">300 trang</td>
-                    <td class="p-4">
-                        <div class="flex space-x-2">
-                            <button
-                                class="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition duration-300 editBookBtn">Sửa</button>
-                            <button
-                                class="bg-red-500 text-white px-4 py-2 rounded-lg hover:bg-red-600 transition duration-300 deleteBookBtn">Xóa</button>
-                        </div>
-                    </td>
-                </tr>
+                @if (isset($books) && $books->isNotEmpty())
+                    @foreach ($books as $book)
+                        <tr class="border-b hover:bg-gray-50 transition duration-200" data-book="{{ json_encode($book) }}">
+                            <td class="p-4">
+                                <img class="w-16 h-16 object-cover rounded-lg"
+                                    src="{{ asset('storage/image/' . $book->book_cover) }}" alt="Ảnh bìa sách">
+                            </td>
+                            <td class="p-4">{{ $book->book_code }}</td>
+                            <td class="p-4">{{ $book->book_name }}</td>
+                            <td class="p-4">{{ $book->book_type }}</td>
+                            <td class="p-4">{{ $book->author }}</td>
+                            <td class="p-4">{{ $book->quantity }}</td>
+                            <td class="p-4">{{ $book->availableBooks }}</td>
+                            <td class="p-4">{{ $book->broken }}</td>
+                            <td class="p-4">{{ $book->description }}</td>
+                            <td class="p-4">
+                                <div class="flex space-x-2">
+                                    <button
+                                        class="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition duration-300 editBookBtn">Sửa</button>
+                                    <button
+                                        class="bg-red-500 text-white px-4 py-2 rounded-lg hover:bg-red-600 transition duration-300 deleteBookBtn">Xóa</button>
+                                </div>
+                            </td>
+                        </tr>
+                    @endforeach
+                @else
+                    <tr>
+                        <td colspan="10" class="p-8 text-center">
+                            <h3 class="text-gray-500 font-medium text-lg">Không có dữ liệu</h3>
+                        </td>
+                    </tr>
+                @endif
             </tbody>
         </table>
+    </div>
+    <div class="py-8">
+        {{ $books->links() }}
     </div>
 
     <!-- Modal Sửa thông tin sách -->
     <div id="editBookModal" class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 hidden">
-        <div class="bg-white p-6 rounded-lg shadow-lg w-full max-w-md">
+        <div class="bg-white p-6 rounded-lg shadow-lg w-full max-w-2xl">
             <div class="flex justify-between items-center mb-4">
-                <h2 class="text-xl font-bold text-primary">Sửa thông tin sách</h2>
+                <h2 class="text-xl font-bold text-primary" id="formTitle">Sửa thông tin sách</h2>
                 <button id="closeModal" class="text-gray-600 text-2xl leading-none p-4">&times;</button>
             </div>
-            <form id="editBookForm">
-                <div class="mb-4">
-                    <label class="block text-gray-700">Ảnh bìa sách</label>
-                    <input type="file" name="book_image" id="bookImageInput" class="w-full border rounded-lg p-2"
-                        accept="image/*">
-                </div>
-                <div class="mb-4">
-                    <label class="block text-gray-700">Tên sách</label>
-                    <input type="text" name="book_name" class="w-full border rounded-lg p-2"
-                        value="Ứng dụng công nghệ thông tin trong dạy học">
-                </div>
-                <div class="mb-4">
-                    <label class="block text-gray-700">Kiểu tài liệu</label>
-                    <input type="text" name="book_name" class="w-full border rounded-lg p-2"
-                        value="Ứng dụng công nghệ thông tin trong dạy học">
-                </div>
-                <div class="mb-4">
-                    <label class="block text-gray-700">Tác giả</label>
-                    <input type="text" name="author" class="w-full border rounded-lg p-2" value="ThS. Đỗ Mạnh Cường">
-                </div>
-                <div class="mb-4">
-                    <label class="block text-gray-700">Số lượng</label>
-                    <input type="number" name="quantity" class="w-full border rounded-lg p-2" value="10">
+            <form id="editBookForm" enctype="multipart/form-data" method="POST" action="{{ route('book.update') }}">
+                @csrf
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div class="mb-4">
+                        <label class="block text-gray-700">Mã sách</label>
+                        <input type="text" name="book_code" class="w-full border rounded-lg p-2"
+                            value="{{ old('book_code') }}" required>
+                        @error('book_code')
+                            <div style="color: #DB3030; font-size: 12.25px; margin-top: 4px; width: 100%;">
+                                {{ $message }}
+                            </div>
+                        @enderror
+                    </div>
+                    <div class="mb-4">
+                        <label class="block text-gray-700">Tên sách</label>
+                        <input type="text" name="book_name" class="w-full border rounded-lg p-2"
+                            value="{{ old('book_name') }}" required>
+                        @error('book_name')
+                            <div style="color: #DB3030; font-size: 12.25px; margin-top: 4px; width: 100%;">
+                                {{ $message }}
+                            </div>
+                        @enderror
+                    </div>
+                    <div class="mb-4">
+                        <label class="block text-gray-700">Kiểu tài liệu</label>
+                        <input type="text" name="book_type" class="w-full border rounded-lg p-2"
+                            value="{{ old('book_type') }}" required>
+                        @error('book_type')
+                            <div style="color: #DB3030; font-size: 12.25px; margin-top: 4px; width: 100%;">
+                                {{ $message }}
+                            </div>
+                        @enderror
+                    </div>
+                    <div class="mb-4">
+                        <label class="block text-gray-700">Tác giả</label>
+                        <input type="text" name="author" class="w-full border rounded-lg p-2"
+                            value="{{ old('author') }}" required>
+                        @error('author')
+                            <div style="color: #DB3030; font-size: 12.25px; margin-top: 4px; width: 100%;">
+                                {{ $message }}
+                            </div>
+                        @enderror
+                    </div>
+                    <div class="mb-4">
+                        <label class="block text-gray-700">Số lượng</label>
+                        <input type="number" name="quantity" class="w-full border rounded-lg p-2"
+                            value="{{ old('quantity') }}" required>
+                        @error('username')
+                            <div style="color: #DB3030; font-size: 12.25px; margin-top: 4px; width: 100%;">
+                                {{ $message }}
+                            </div>
+                        @enderror
+                    </div>
+
+                    <div class="mb-4">
+                        <label class="block text-gray-700">Sách mất hỏng</label>
+                        <input type="number" name="broken" class="w-full border rounded-lg p-2"
+                            value="{{ old('broken') }}">
+                    </div>
+                    <div class="mb-4 w-full">
+                        <label class="block text-gray-700">Ảnh bìa sách</label>
+                        <input type="file" name="book_cover" id="bookImageInput" class="w-full border rounded-lg p-2"
+                            accept="image/*">
+                    </div>
                 </div>
                 <div class="mb-4">
                     <label class="block text-gray-700">Mô tả</label>
-                    <textarea name="description" class="w-full border rounded-lg p-2" rows="3">200 trang</textarea>
+                    <textarea name="description" class="w-full border rounded-lg p-2" rows="3">{{ old('description') }}</textarea>
+
                 </div>
                 <div class="flex justify-end space-x-2">
-                    <button type="button" id="cancelModal" class="px-4 py-2 bg-gray-500 text-white rounded-lg">Hủy</button>
+                    <button type="button" id="cancelModal"
+                        class="px-4 py-2 bg-gray-500 text-white rounded-lg">Hủy</button>
                     <button type="submit" class="px-4 py-2 bg-blue-500 text-white rounded-lg">Lưu</button>
                 </div>
             </form>
@@ -138,77 +188,33 @@
             </div>
         </div>
     </div>
+
+    <!-- Modal thông báo -->
+    <div id="notificationModal"
+        class="fixed inset-0 flex items-center justify-center bg-gray-500 bg-opacity-50 z-50 hidden">
+        <div class="bg-white p-6 rounded-lg shadow-lg max-w-sm w-full">
+            <h3 id="modalTitle" class="text-xl font-semibold"></h3>
+            <p id="modalMessage" class="text-sm mt-2"></p>
+            <div class="mt-4 flex justify-end space-x-2">
+                <button id="modalOkBtn" class="bg-blue-500 text-white px-4 py-2 rounded-lg">OK</button>
+            </div>
+        </div>
+    </div>
+
+
 @endsection
 
-<script>
-    document.addEventListener('DOMContentLoaded', function() {
-        // Xử lý modal sửa
-        const editBookBtns = document.querySelectorAll('.editBookBtn');
-        const editBookModal = document.getElementById('editBookModal');
-        const closeModalBtn = document.getElementById('closeModal');
-        const cancelModalBtn = document.getElementById('cancelModal');
-        const editBookForm = document.getElementById('editBookForm');
 
-        function openModal() {
-            editBookModal.classList.remove('hidden');
-        }
 
-        function closeModal() {
-            editBookModal.classList.add('hidden');
-        }
+@if ($errors->any())
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const modal = document.getElementById("editBookModal");
 
-        editBookBtns.forEach(btn => {
-            btn.addEventListener('click', openModal);
+            modal.classList.remove("hidden");
         });
-
-        closeModalBtn.addEventListener('click', closeModal);
-        cancelModalBtn.addEventListener('click', closeModal);
-
-        editBookForm.addEventListener('submit', function(e) {
-            e.preventDefault();
-            alert('Thông tin sách đã được cập nhật!');
-            closeModal();
-        });
-
-        window.addEventListener('click', function(e) {
-            if (e.target === editBookModal) {
-                // closeModal();
-                e.preventDefault();
-            }
-        });
-
-        // Xử lý modal xóa
-        const deleteBookBtns = document.querySelectorAll('.deleteBookBtn');
-        const deleteBookModal = document.getElementById('deleteBookModal');
-        const closeDeleteModalBtn = document.getElementById('closeDeleteModal');
-        const cancelDeleteModalBtn = document.getElementById('cancelDeleteModal');
-        const confirmDeleteModalBtn = document.getElementById('confirmDeleteModal');
-
-        function openDeleteModal() {
-            deleteBookModal.classList.remove('hidden');
-        }
-
-        function closeDeleteModal() {
-            deleteBookModal.classList.add('hidden');
-        }
-
-        deleteBookBtns.forEach(btn => {
-            btn.addEventListener('click', openDeleteModal);
-        });
-
-        closeDeleteModalBtn.addEventListener('click', closeDeleteModal);
-        cancelDeleteModalBtn.addEventListener('click', closeDeleteModal);
-
-        confirmDeleteModalBtn.addEventListener('click', function() {
-            alert('Sách đã được xóa!');
-            closeDeleteModal();
-        });
-
-        window.addEventListener('click', function(e) {
-            if (e.target === deleteBookModal) {
-                // closeDeleteModal(); 
-                e.preventDefault();
-            }
-        });
-    });
-</script>
+    </script>
+@endif
+@section('scripts')
+    <script src="{{ asset('asset/js/bookManagement.js') }}"></script>
+@endsection

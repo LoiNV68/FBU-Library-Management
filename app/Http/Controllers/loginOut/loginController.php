@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\loginOut;
 
 use App\Http\Controllers\Controller;
-use App\Models\user\userModel;
+use App\Models\userModel;
 use Illuminate\Container\Attributes\DB;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;

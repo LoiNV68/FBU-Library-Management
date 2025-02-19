@@ -3,9 +3,11 @@
     <div class="container mx-auto flex items-center justify-between p-4">
         <!-- Logo và tiêu đề -->
         <div class="flex items-center space-x-4 ">
-            <img class="" src="https://sinhvien.fbu.edu.vn/Content/AConfig/images/sv_logo_dashboard.png" alt="Logo Thư Viện">
+            <a href="{{ route('home') }}">
+                <img class="w-30 h-14" src="{{ asset('asset/image/sv_header_login.png') }}" alt="Logo Thư Viện">
+            </a>
         </div>
-        <div>
+        <div class="mr-20">
             <h2 class="text-4xl font-bold text-white">@yield('title')</h2>
         </div>
         <!-- Nút đăng nhập -->
