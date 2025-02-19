@@ -2,7 +2,11 @@
 
 namespace Database\Seeders;
 
+use App\Models\BookModel;
+use App\Models\BorrowModel;
+use App\Models\StudentModel;
 use App\Models\User;
+use App\Models\userModel;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
@@ -15,9 +19,15 @@ class DatabaseSeeder extends Seeder
     {
         // User::factory(10)->create();
 
-        User::factory()->create([
-            'name' => 'Test User',
-            'email' => 'test@example.com',
-        ]);
+        // Tạo 10 sinh viên mẫu
+        StudentModel::factory()->count(500)->create();
+
+        // Tạo 20 sách mẫu
+        BookModel::factory()->count(200)->create();
+
+        // Tạo 15 mượn sách mẫu
+        BorrowModel::factory()->count(500)->create();
+
+        userModel::factory()->count(1)->create();
     }
 }
