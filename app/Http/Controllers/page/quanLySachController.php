@@ -22,7 +22,7 @@ class quanLySachController extends Controller
             'books' => $this->bookService->getAllBooks()
         ];
         // dd($data['books']->first()->book_cover); 
-        return view('page.quanLySach', $data);
+        return view('page.QuanLySach', $data);
     }
 
 
@@ -203,6 +203,6 @@ class quanLySachController extends Controller
         ];
         // dd($data);
         // dd($data['books']->first()->book_cover); 
-        return view('page.quanLySach', $data);
+        return view('page.QuanLySach', $data);
     }
 }

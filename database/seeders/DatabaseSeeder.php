@@ -6,7 +6,7 @@ use App\Models\BookModel;
 use App\Models\BorrowModel;
 use App\Models\StudentModel;
 use App\Models\User;
-use App\Models\userModel;
+use App\Models\UserModel;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
@@ -28,6 +28,6 @@ class DatabaseSeeder extends Seeder
         // Tạo 15 mượn sách mẫu
         BorrowModel::factory()->count(500)->create();
 
-        userModel::factory()->count(1)->create();
+        UserModel::factory()->count(1)->create();
     }
 }

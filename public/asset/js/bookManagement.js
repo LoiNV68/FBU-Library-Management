@@ -9,9 +9,20 @@ $(document).ready(function () {
 
     addBookBtn.on("click", () => {
         // Đổi title
-        $('#formTitle').text('Thêm sách mới');
+        $("#formTitle").text("Thêm sách mới");
         // Thay đổi action của form thành route('book.add')
         editForm.attr("action", "/quan-ly-sach/book/add");
+        // Reset form
+        editForm.trigger("reset");
+        // Mở modal
+        modal.removeClass("hidden");
+    });
+
+    editButtons.on("click", () => {
+        // Đổi title
+        $("#formTitle").text("Sửa thông tin sách");
+        // Thay đổi action của form thành route('book.add')
+        editForm.attr("action", "/quan-ly-sach/book/update");
         // Reset form
         editForm.trigger("reset");
         // Mở modal

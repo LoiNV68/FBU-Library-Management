@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\loginOut;
 
 use App\Http\Controllers\Controller;
-use App\Models\userModel;
+use App\Models\UserModel;
 use Illuminate\Container\Attributes\DB;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
@@ -16,7 +16,7 @@ class loginController extends Controller
     protected $user;
     public function __construct()
     {
-        $this->user = new userModel();
+        $this->user = new UserModel();
     }
 
     public function login()

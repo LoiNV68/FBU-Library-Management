@@ -9,21 +9,32 @@
     <!-- Search Box -->
     <div class="mb-6">
         <form action="{{ route('book.search') }}" method="GET" class="flex items-center gap-2">
+            <!-- Ô tìm kiếm -->
             <input type="text"
                 class="flex-grow max-w-md px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-primary shadow-sm"
                 placeholder="Tìm kiếm sách, mã sách, tác giả..." name="query" />
+
+            <!-- Nút Tìm kiếm -->
             <button type="submit"
-                class="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition duration-300">
-                Tìm kiếm
+                class="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition duration-300 flex items-center gap-2">
+                <i class="fas fa-search"></i> <!-- Icon tìm kiếm -->
+                <span>Tìm kiếm</span>
             </button>
+
+            <!-- Nút Thêm sách -->
             <button type="button" id="addBookBtn"
-                class="bg-green-500 text-white px-4 py-2 rounded-lg hover:bg-green-600 transition duration-300"
+                class="bg-green-500 text-white px-4 py-2 rounded-lg hover:bg-green-600 transition duration-300 flex items-center gap-2"
                 onclick="event.preventDefault();">
-                Thêm sách
+                <i class="fas fa-plus"></i> <!-- Icon thêm -->
+                <span>Thêm sách</span>
             </button>
-            <button onclick="() => {event.preventDefault(); window.location.reload();}"
-                class="bg-amber-500 text-white px-4 py-2 w-[110px] rounded-lg hover:bg-amber-600 transition duration-300">Làm
-                mới</button>
+
+            <!-- Nút Làm mới -->
+            <button onclick="event.preventDefault(); window.location.reload();"
+                class="bg-amber-500 text-white px-4 py-2 rounded-lg hover:bg-amber-600 transition duration-300 flex items-center gap-2">
+                <i class="fas fa-sync-alt"></i> <!-- Icon làm mới -->
+                <span>Làm mới</span>
+            </button>
         </form>
     </div>
 
@@ -55,9 +66,9 @@
                                     src="{{ asset('storage/image/' . $book->book_cover) }}" alt="Ảnh bìa sách">
                             </td>
                             <td class="p-4">{{ $book->book_code }}</td>
-                            <td class="p-4">{{ $book->book_name }}</td>
+                            <td class="p-4 text-nowrap">{{ $book->book_name }}</td>
                             <td class="p-4">{{ $book->book_type }}</td>
-                            <td class="p-4">{{ $book->author }}</td>
+                            <td class="p-4 ">{{ $book->author }}</td>
                             <td class="p-4">{{ $book->quantity }}</td>
                             <td class="p-4">{{ $book->availableBooks }}</td>
                             <td class="p-4">{{ $book->broken }}</td>
@@ -82,18 +93,20 @@
             </tbody>
         </table>
     </div>
-    <div class="py-8">
-        {{ $books->links() }}
-    </div>
+    @if (isset($books) && $books->isNotEmpty())
+        <div class="py-8">
+            {{ $books->links() }}
+        </div>
+    @endif
 
     <!-- Modal Sửa thông tin sách -->
     <div id="editBookModal" class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 hidden">
         <div class="bg-white p-6 rounded-lg shadow-lg w-full max-w-2xl">
             <div class="flex justify-between items-center mb-4">
-                <h2 class="text-xl font-bold text-primary" id="formTitle">Sửa thông tin sách</h2>
+                <h2 class="text-xl font-bold text-primary" id="formTitle">Thêm sách mới</h2>
                 <button id="closeModal" class="text-gray-600 text-2xl leading-none p-4">&times;</button>
             </div>
-            <form id="editBookForm" enctype="multipart/form-data" method="POST" action="{{ route('book.update') }}">
+            <form id="editBookForm" enctype="multipart/form-data" method="POST" action="{{ route('book.add') }}">
                 @csrf
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div class="mb-4">
