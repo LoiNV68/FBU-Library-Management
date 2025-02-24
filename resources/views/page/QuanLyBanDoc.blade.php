@@ -13,11 +13,13 @@
                 class="flex-grow max-w-md px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-primary shadow-sm"
                 placeholder="Tìm kiếm bạn đọc, mã sinh viên, viện, lớp..." name="query" />
             <button
-                class="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition duration-300 editBookBtn">Tìm
-                kiếm</button>
+                class="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition duration-300 editBookBtn"><i
+                    class="fas fa-search"></i> <!-- Icon tìm kiếm -->
+                <span>Tìm kiếm</span></button>
             <button onclick="() => {event.preventDefault(); window.location.reload();}"
-                class="bg-amber-500 text-white px-4 py-2 w-[110px] rounded-lg hover:bg-amber-600 transition duration-300">Làm
-                mới</button>
+                class="bg-amber-500 text-white px-4 py-2 rounded-lg hover:bg-amber-600 transition duration-300"><i
+                    class="fas fa-sync-alt"></i> <!-- Icon làm mới -->
+                <span>Làm mới</span></button>
         </form>
     </div>
 
@@ -46,9 +48,11 @@
                             <td class="p-4">{{ $reader->school_year }}</td>
                             <td class="p-4">
                                 <div class="flex space-x-2">
-                                    <button onclick="() =>{window.location.redirect({{route('')}}}"
-                                        class="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition duration-300 editBookBtn">Ghi
-                                        mượn</button>
+                                    <button
+                                        onclick="window.location.href = '{{ route('borrow', ['student_code' => $reader->student_code]) }}'"
+                                        class="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition duration-300 editBookBtn">
+                                        Ghi mượn
+                                    </button>
                                     @if ($reader->ban)
                                         <button
                                             class="bg-green-500 text-white px-4 py-2 w-[110px] rounded-lg hover:bg-green-600 transition duration-300 unbanReaderBtn">Bỏ

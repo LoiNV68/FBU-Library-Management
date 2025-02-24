@@ -18,7 +18,7 @@ return new class extends Migration
             $table->enum('book_type', ['Giáo trình', 'Tiểu luận', 'Đồ án', 'Luận án', 'Luận văn', 'Bài tập lớn']);
             $table->string('author');
             $table->unsignedInteger('quantity'); // Không âm
-            $table->unsignedInteger('broken')->default(0);
+            $table->unsignedInteger('broken')->default(0)->nullable();
             $table->text('description')->nullable();
             $table->string('book_cover')->nullable();
             $table->timestamps();

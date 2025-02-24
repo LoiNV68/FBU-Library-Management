@@ -2,7 +2,7 @@
 
 namespace Database\Factories;
 
-use App\Models\userModel;
+use App\Models\UserModel;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -15,7 +15,7 @@ class UserModelFactory extends Factory
      *
      * @return array<string, mixed>
      */
-    protected $model = userModel::class;
+    protected $model = UserModel::class;
     public function definition(): array
     {
         $username = 'admin';

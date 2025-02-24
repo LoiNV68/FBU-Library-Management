@@ -11,11 +11,19 @@
         <input type="text"
             class="flex-grow max-w-md px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-primary shadow-sm"
             placeholder="Tìm kiếm bạn đọc, giáo trình..." />
-        <button class="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition duration-300">Tìm
-            kiếm</button>
-        <button
-            class="bg-green-500 text-white px-4 py-2 rounded-lg hover:bg-green-600 transition duration-300 loanBookBtn">Ghi
-            mượn</button>
+        <button class="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition duration-300"><i
+                class="fas fa-search"></i> <!-- Icon tìm kiếm -->
+            <span>Tìm kiếm</span></button>
+        <button class="bg-green-500 text-white px-4 py-2 rounded-lg hover:bg-green-600 transition duration-300 loanBookBtn">
+            <i class="fas fa-plus"></i> <!-- Icon thêm -->
+            <span>Ghi mượn</span>
+        </button>
+        <!-- Nút Làm mới -->
+        <button onclick="event.preventDefault(); window.location.reload();"
+            class="bg-amber-500 text-white px-4 py-2 rounded-lg hover:bg-amber-600 transition duration-300 flex items-center gap-2">
+            <i class="fas fa-sync-alt"></i> <!-- Icon làm mới -->
+            <span>Làm mới</span>
+        </button>
 
     </div>
 
@@ -24,11 +32,11 @@
         <table class="w-full border-collapse ">
             <thead>
                 <tr class="bg-primary text-white">
-                    <th class="p-4 text-left">Ngày hết hạn</th>
+                    <th class="p-4 text-left text-nowrap">Ngày hết hạn</th>
                     <th class="p-4 text-left">Mã sách</th>
-                    <th class="p-4 text-left">Tên sách</th>
-                    <th class="p-4 text-left">Kiểu tài liệu</th>
-                    <th class="p-4 text-left">Ngày ghi mượn</th>
+                    <th class="p-4 text-left ">Tên sách</th>
+                    <th class="p-4 text-left text-nowrap">Kiểu tài liệu</th>
+                    <th class="p-4 text-left text-nowrap">Ngày ghi mượn</th>
                     <th class="p-4 text-left">Bạn đọc</th>
                     <th class="p-4 text-left">Mã sinh viên</th>
                     <th class="p-4 text-left">Số lượng sách mượn</th>
@@ -39,72 +47,83 @@
                 </tr>
             </thead>
             <tbody>
-                <tr class="border-b hover:bg-gray-50 transition duration-200">
-                    <td class="p-4">02/10/2025</td>
-                    <td class="p-4">DC12321</td>
-                    <td class="p-4">Lập trình Python cơ bản</td>
-                    <td class="p-4">Giáo trình</td>
-                    <td class="p-4">02/10/2024</td>
-                    <td class="p-4">Phạm Thanh Tươi</td>
-                    <td class="p-4">2254800008</td>
-                    <td class="p-4">5</td>
-                    <td class="p-4">
-                        <div class="font-bold text-red-500 px-4 py-2 rounded-lg transition duration-300 text-left">
-                            Đã quá hạn
-                        </div>
-                    </td>
-                    <td class="p-4">
-                        <div
-                            class="font-bold text-green-500 w-[116px] px-4 py-2 rounded-lg transition duration-300 text-left">
-                            Chưa
-                        </div>
-                    </td>
-                    <td class="p-4"></td>
-                    <td class="p-4 sticky right-0 bg-white z-2">
-                        <div class="flex space-x-2">
-                            <button
-                                class="bg-blue-500 text-white  text-nowrap px-4 py-2 rounded-lg hover:bg-blue-600 transition duration-300 extendBtn">Gia
-                                hạn</button>
-                            <button
-                                class="bg-red-500 text-white  text-nowrap px-4 py-2 rounded-lg hover:bg-red-600 transition duration-300 returnBookBtn">Ghi
-                                trả</button>
-                        </div>
-                    </td>
-                </tr>
-                <tr class="border-b hover:bg-gray-50 transition duration-200">
-                    <td class="p-4">02/10/2025</td>
-                    <td class="p-4">DC12322</td>
-                    <td class="p-4 text-nowrap">Ứng dụng công nghệ thông tin trong dạy học</td>
-                    <td class="p-4">Giáo trình</td>
-                    <td class="p-4">02/10/2024</td>
-                    <td class="p-4">Phạm Thanh Tươi</td>
-                    <td class="p-4">2254800008</td>
-                    <td class="p-4">6</td>
-                    <td class="p-4">
-                        <div class="font-bold text-red-500 px-4 py-2 rounded-lg transition duration-300 text-left">
-                            Không
-                        </div>
-                    </td>
-                    <td class="p-4">
-                        <div
-                            class="font-bold text-green-500 w-[116px] px-4 py-2 rounded-lg transition duration-300 text-left">
-                            Đã trả
-                        </div>
-                    </td>
-                    <td class="p-4"></td>
-                    <td class="p-4 sticky right-0 bg-white z-2">
-                        <div class="flex space-x-2 justify-center">
-                            <button
-                                class="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition duration-300">Không
-                                hành động</button>
-                        </div>
-                    </td>
-                </tr>
+                @if (isset($transactions) && $transactions->isNotEmpty())
+                    @foreach ($transactions as $transaction)
+                        <tr class="border-b hover:bg-gray-50 transition duration-200">
+                            <td class="p-4">{{ formatDate($transaction->return_day, 'd-m-Y') }}</td>
+                            <td class="p-4">{{ $transaction->book_code }}</td>
+                            <td class="p-4 text-nowrap">{{ $transaction->book_name }}</td>
+                            <td class="p-4">{{ $transaction->book_type }}</td>
+                            <td class="p-4">{{ formatDate($transaction->borrow_day, 'd-m-Y') }}</td>
+                            <td class="p-4 text-nowrap">{{ $transaction->student_name }}</td>
+                            <td class="p-4">{{ $transaction->student_code }}</td>
+                            <td class="p-4">{{ $transaction->quantity_borrow }}</td>
+                            <td class="p-4">
+                                @if ($transaction->overdue)
+                                    <div
+                                        class="font-bold text-red-500 w-[116px] px-4 py-2 rounded-lg transition duration-300 text-left">
+                                        Đã quá hạn
+                                    </div>
+                                @else
+                                    <div
+                                        class="font-bold text-green-500 w-[116px] px-4 py-2 rounded-lg transition duration-300 text-left">
+                                        Không
+                                    </div>
+                                @endif
+                            </td>
+                            <td class="p-4">
+                                @if ($transaction->is_return)
+                                    <div
+                                        class="font-bold text-green-500 w-[116px] px-4 py-2 rounded-lg transition duration-300 text-left">
+                                        Đã trả
+                                    </div>
+                                @else
+                                    <div
+                                        class="font-bold text-red-500 w-[116px] px-4 py-2 rounded-lg transition duration-300 text-left">
+                                        Chưa trả
+                                    </div>
+                                @endif
+
+                            </td>
+                            <td class="p-4"></td>
+                            <td class="p-4 sticky right-0 bg-white z-2">
+                                @if ($transaction->is_return)
+                                    <div class="flex space-x-2 justify-center">
+                                        <button
+                                            class="bg-blue-500 text-white w-[175px] px-4 py-2 rounded-lg hover:bg-blue-600 transition duration-300">Không
+                                            hành động</button>
+                                    </div>
+                                @else
+                                    <div class="flex space-x-2">
+                                        <button
+                                            class="bg-blue-500 text-white  text-nowrap px-4 py-2 rounded-lg hover:bg-blue-600 transition duration-300 extendBtn">Gia
+                                            hạn</button>
+                                        <button
+                                            class="bg-red-500 text-white  text-nowrap px-4 py-2 rounded-lg hover:bg-red-600 transition duration-300 returnBookBtn">Ghi
+                                            trả</button>
+                                    </div>
+                                @endif
+
+                            </td>
+                        </tr>
+                    @endforeach
+                @else
+                    <tr>
+                        <td colspan="10" class="p-8 text-center">
+                            <h3 class="text-gray-500 font-medium text-lg">Không có dữ liệu</h3>
+                        </td>
+                    </tr>
+                @endif
+
 
             </tbody>
         </table>
     </div>
-
+    @if (isset($transactions) && $transactions->isNotEmpty())
+        <div class="py-8">
+            {{ $transactions->links() }}
+        </div>
+    @endif
     <!-- Modal Gia hạn -->
     <div id="extendModal" class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 hidden">
         <div class="bg-white p-6 rounded-lg shadow-lg w-full max-w-md">
@@ -171,8 +190,13 @@
             </div>
             <form id="loanForm">
                 <div class="mb-4">
+                    <label class="block text-gray-700">Mã sinh viên</label>
+                    <input type="text" name="student_code" class="w-full border rounded-lg p-2"
+                        placeholder="Nhập tên sách" required>
+                </div>
+                <div class="mb-4">
                     <label class="block text-gray-700">Mã sách</label>
-                    <input type="text" name="book_name" class="w-full border rounded-lg p-2"
+                    <input type="text" name="book_code" class="w-full border rounded-lg p-2"
                         placeholder="Nhập tên sách" required>
                 </div>
                 <div class="mb-4">

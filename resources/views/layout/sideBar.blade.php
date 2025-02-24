@@ -38,7 +38,7 @@
                 </a>
             </li>
             <li>
-                <a href="{{ route('qlbd') }}"
+                <a href="{{ url('/quan-ly-ban-doc') }}"
                     class="flex items-center px-4 py-3 text-white hover:bg-primary rounded-lg transition duration-300 {{ $qlbd ? 'sidebar-active' : '' }}">
                     <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"
                         xmlns="http://www.w3.org/2000/svg">

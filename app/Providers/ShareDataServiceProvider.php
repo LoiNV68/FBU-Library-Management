@@ -11,8 +11,10 @@ class ShareDataServiceProvider extends ServiceProvider
     public function boot(): void
     {
         // Chỉ cần một View::composer là đủ
-        View::composer(['layout.main', 'layout.sideBar', 'block.header'], function ($view) {
+        View::composer(['layout.main', 'layout.sideBar', 'block.header', 'login.login'], function ($view) {
+            $user = null;
             try {
+
                 $user = Auth::user();
                 $currentUrl = request()->segment(1);
 
