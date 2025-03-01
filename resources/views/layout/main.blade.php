@@ -14,9 +14,8 @@
     <!-- CSS -->
     <link rel="stylesheet" href="{{ asset('asset/css/toastr.min.css') }}">
     <link rel="stylesheet" href="{{ asset('asset/css/style.css') }}">
-    <script src="https://cdn.tailwindcss.com"></script>
 
-
+    <link href="{{ asset('css/app.css') }}" rel="stylesheet">
     <!-- JavaScript Dependencies -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
     <script src="{{ asset('asset/js/toastr.min.js') }}"></script>
