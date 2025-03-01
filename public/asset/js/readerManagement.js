@@ -49,7 +49,6 @@ confirmDeleteModalBtn.on("click", function () {
 
     const action = currentStudent.hasClass("ban") ? "unban" : "ban";
     const url = `/quan-ly-ban-doc/reader/ban`;
-    console.log(action);
 
     $.ajax({
         type: "POST",
@@ -60,7 +59,6 @@ confirmDeleteModalBtn.on("click", function () {
         data: { student_code: currentStudentCode, action: action },
         dataType: "json",
         success: function (response) {
-            console.log(`${action} thành công:`, response);
             currentStudent.toggleClass("ban");
             // Cập nhật nút trong hàng hiện tại
             const actionsDiv = currentStudent.find("td:last-child .flex");
@@ -103,8 +101,8 @@ $(".loanBtn").on("click", function () {
                 $("#banModal").removeClass("hidden"); // Hiển thị modal
             } else {
                 // Nếu không bị cấm, chuyển hướng
-                console.log('22');
-                
+                console.log("22");
+
                 window.location.href = `/quan-ly-muon-tra/transaction?student_code=${studentCode}`;
             }
         },
