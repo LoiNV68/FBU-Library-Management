@@ -1,17 +1,14 @@
 <?php
 
-namespace App\Http\Controllers\loginOut;
+namespace App\Http\Controllers\LoginOut;
 
 use App\Http\Controllers\Controller;
 use App\Models\UserModel;
-use Illuminate\Container\Attributes\DB;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\DB as FacadesDB;
-use Illuminate\Support\Facades\Hash;
 
-class loginController extends Controller
+class LoginController extends Controller
 {
     protected $user;
     public function __construct()

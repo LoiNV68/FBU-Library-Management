@@ -16,7 +16,7 @@
                 class="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition duration-300 editBookBtn"><i
                     class="fas fa-search"></i> <!-- Icon tìm kiếm -->
                 <span>Tìm kiếm</span></button>
-            <button onclick="() => {event.preventDefault(); window.location.reload();}"
+            <button onclick="() => {window.location.href='{{ route('qlbd') }}';}"
                 class="bg-amber-500 text-white px-4 py-2 rounded-lg hover:bg-amber-600 transition duration-300"><i
                     class="fas fa-sync-alt"></i> <!-- Icon làm mới -->
                 <span>Làm mới</span></button>
@@ -48,9 +48,8 @@
                             <td class="p-4">{{ $reader->school_year }}</td>
                             <td class="p-4">
                                 <div class="flex space-x-2">
-                                    <button
-                                        onclick="window.location.href = '{{ route('borrow', ['student_code' => $reader->student_code]) }}'"
-                                        class="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition duration-300 editBookBtn">
+                                    <button data-student-code="{{ $reader->student_code }}"
+                                        class="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition duration-300 loanBtn">
                                         Ghi mượn
                                     </button>
                                     @if ($reader->ban)
@@ -83,6 +82,31 @@
             {{ $readers->links() }}
         </div>
     @endif
+
+    <!-- Modal thông báo -->
+    <div id="banModal" class="hidden fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
+        <div
+            class="bg-white p-8 rounded-lg shadow-2xl max-w-md w-full transform transition-all duration-300 scale-95">
+            <!-- Icon cảnh báo -->
+            <div class="flex justify-center mb-4">
+                <svg class="w-12 h-12 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                    xmlns="http://www.w3.org/2000/svg">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                </svg>
+            </div>
+            <!-- Nội dung thông báo -->
+            <p class="text-center text-red-600 text-xl font-bold mb-4">Sinh viên này đang bị cấm mượn sách!</p>
+            <!-- Nút đóng -->
+            <div class="mt-6 text-center">
+                <button id="closeModal"
+                    class="bg-red-600 text-white px-6 py-2 rounded-lg hover:bg-red-700 transition duration-300 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2">
+                    Đóng
+                </button>
+            </div>
+        </div>
+    </div>
+
     <!-- Modal Xóa sách -->
     <div id="deleteBookModal" class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 hidden">
         <div class="bg-white p-6 rounded-lg shadow-lg w-full max-w-md">

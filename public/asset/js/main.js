@@ -1,4 +1,4 @@
-$(document).ready(function () {
+$(function () {
     // Toggle sidebar khi click vào nút (nếu có)
     $("#toggleSidebar").on("click", function () {
         $(".sidebar-gradient").toggleClass("collapsed");
@@ -15,5 +15,5 @@ $(document).ready(function () {
 
     // Kiểm tra kích thước màn hình khi tải trang và khi thay đổi kích thước
     checkWindowSize();
-    $(window).resize(checkWindowSize);
+    $(window).on("resize", checkWindowSize);
 });

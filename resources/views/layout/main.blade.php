@@ -5,6 +5,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="csrf-token" content="{{ csrf_token() }}">
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
     <title>@yield('titleWeb')</title>
     <link rel="shortcut icon" href="https://sinhvien.fbu.edu.vn/Content/AConfig/images/favicon.png" type="image/x-icon">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
@@ -12,6 +15,7 @@
     <link rel="stylesheet" href="{{ asset('asset/css/toastr.min.css') }}">
     <link rel="stylesheet" href="{{ asset('asset/css/style.css') }}">
     <script src="https://cdn.tailwindcss.com"></script>
+
 
     <!-- JavaScript Dependencies -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
@@ -49,6 +53,7 @@
     <!-- Scripts -->
     <script src="{{ asset('asset/js/main.js') }}"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
     @yield('scripts')
 </body>
 
