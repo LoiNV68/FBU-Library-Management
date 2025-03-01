@@ -60,7 +60,6 @@ class BorrowReBorrowManagementService
     }
     public function handleAddTransaction($data)
     {
-        dd($data);
         $existTransaction = BorrowModel::where('student_code', $data['student_code'])
             ->where('book_code', $data['book_code'])
             ->where('is_return', 0)
