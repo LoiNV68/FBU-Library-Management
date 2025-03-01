@@ -1,39 +1,57 @@
-$(document).ready(function () {
+$(function () {
     // Xử lý modal chỉnh sửa
-    const editButtons = $(".editBookBtn");
-    const modal = $("#editBookModal");
+    const $editButtons = $(".editBookBtn");
+    const $modal = $("#editBookModal");
     const closeModal = $("#closeModal");
     const cancelModal = $("#cancelModal");
-    const editForm = $("#editBookForm");
-    const addBookBtn = $("#addBookBtn");
-
-    addBookBtn.on("click", () => {
+    const $editForm = $("#editBookForm");
+    const $addBookBtn = $("#addBookBtn");
+    const $formTitle = $("#formTitle");
+    const $inputBroken = $(".book-lost");
+    const $errorMessages = $(".error-message");
+    let validateUpdate = $("#editBookForm").data("validate-update");
+    let validateAdd = $("#editBookForm").data("validate-add");
+    function handleAddBook() {
         // Đổi title
-        $("#formTitle").text("Thêm sách mới");
+        $formTitle.text("Thêm sách mới");
+        // Xóa trường broken
+        $inputBroken.addClass("hidden");
         // Thay đổi action của form thành route('book.add')
-        editForm.attr("action", "/quan-ly-sach/book/add");
+        $editForm.attr("action", "/quan-ly-sach/book/add");
         // Reset form
-        editForm.trigger("reset");
+       
         // Mở modal
-        modal.removeClass("hidden");
-    });
+        $modal.removeClass("hidden");
+    }
+    $addBookBtn.on("click", handleAddBook);
 
-    editButtons.on("click", () => {
+    if (validateAdd === 1) {
+        handleAddBook();
+    }
+    function handleEditBook() {
         // Đổi title
-        $("#formTitle").text("Sửa thông tin sách");
-        // Thay đổi action của form thành route('book.add')
-        editForm.attr("action", "/quan-ly-sach/book/update");
-        // Reset form
-        editForm.trigger("reset");
+        $formTitle.text("Sửa thông tin sách");
+        // Thêm trường broken
+        $inputBroken.removeClass("hidden");
+        // Thay đổi action của form thành route('book.update')
+        $editForm.attr("action", "/quan-ly-sach/book/update");
+        // Reset Validate
+        $errorMessages.text("");
         // Mở modal
-        modal.removeClass("hidden");
-    });
+        $modal.removeClass("hidden");
+    }
 
+    // Nếu có lỗi validateUpdate, tự động mở modal và thiết lập form
+    if (validateUpdate === 1) {
+        handleEditBook();
+    }
+    // Khi người dùng bấm vào nút sửa, cũng thực thi hàm
+    $editButtons.on("click", handleEditBook);
     // Xử lý đóng modal
     [closeModal, cancelModal].forEach((button) => {
         $(button).on("click", () => {
-            modal.addClass("hidden");
-            editForm.trigger("reset");
+            $modal.addClass("hidden");
+            $editForm.trigger("reset");
         });
     });
 
@@ -50,8 +68,9 @@ $(document).ready(function () {
     }
 
     $("#modalOkBtn").on("click", reloadPage);
+
     // Điền data khi open modal
-    editButtons.each(function () {
+    $editButtons.each(function () {
         $(this).on("click", function () {
             try {
                 const row = $(this).closest("tr");
@@ -63,7 +82,7 @@ $(document).ready(function () {
                 }
 
                 // Reset form trước khi điền dữ liệu
-                editForm.trigger("reset");
+                $editForm.trigger("reset");
 
                 // Điền dữ liệu vào form
                 const fields = [
@@ -78,14 +97,14 @@ $(document).ready(function () {
                 ];
 
                 fields.forEach((field) => {
-                    const input = editForm.find(`[name="${field}"]`);
+                    const input = $editForm.find(`[name="${field}"]`);
 
                     if (input.length) {
                         input.val(bookData[field]);
                     }
                 });
 
-                modal.removeClass("hidden");
+                $modal.removeClass("hidden");
             } catch (error) {
                 console.error(error);
             }
@@ -155,7 +174,7 @@ $(document).ready(function () {
 
     // Ngăn đóng modal khi click bên ngoài
     $(window).on("click", function (e) {
-        if (e.target === deleteBookModal[0] || e.target === modal[0]) {
+        if (e.target === deleteBookModal[0] || e.target === $modal[0]) {
             e.preventDefault();
         }
     });

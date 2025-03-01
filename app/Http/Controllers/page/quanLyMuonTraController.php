@@ -3,41 +3,85 @@
 namespace App\Http\Controllers\page;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\borrow\BorrowRequest;
+use App\Http\Requests\borrow\ExtendRequest;
 use App\Services\BorrowReBorrowManagementService;
+use Illuminate\Contracts\View\View;
 use Illuminate\Http\Request;
 
-class quanLyMuonTraController extends Controller
+class QuanLyMuonTraController extends Controller
 {
     public function __construct(
         private readonly BorrowReBorrowManagementService $borrowService
     ) {}
-    public function index()
+    public function index(): View
     {
-        $data = [
-            'title' => 'Quản Lý Mượn trả',
-            'titleWeb' => 'Quản Lý Thư Viện- Mượn trả',
-            'transactions' => $this->borrowService->getAllTransactions()
-        ];
-
-        return view('page.QuanLyMuonTra', $data);
+        return view('page.QuanLyMuonTra', [
+            'title' => 'Quản Lý Mượn Trả',
+            'titleWeb' => 'Quản Lý Thư Viện - Mượn Trả',
+            'transactions' => $this->borrowService->getAllTransactions(),
+        ]);
     }
 
-    public function handleBorrow(Request $request)
+    public function handleBorrow(Request $request): View
     {
-        $student_code = null;
-        $student_code = $request->student_code;
-        // dd($student_code);
-        $data = [
-            'title' => 'Quản Lý Mượn trả',
-            'titleWeb' => 'Quản Lý Thư Viện- Mượn trả',
-            'transactions' => $this->borrowService->getAllTransactions()
-        ];
-        dd($this->borrowService->getAllTransactions());
-        foreach ($data['transactions'] as $transaction) {
-            dd($transaction);
+        return view('page.QuanLyMuonTra', [
+            'title' => 'Quản Lý Mượn Trả',
+            'titleWeb' => 'Quản Lý Thư Viện - Mượn Trả',
+            'transactions' => $this->borrowService->getAllTransactions(),
+            'student_code' => $request->student_code,
+        ]);
+    }
+    public function checkBookQuantity(Request $request)
+    {
+        $book = $this->borrowService->checkBookQuantity($request->book_code);
+
+        if (!$book) {
+            return response()->json(['error' => 'Không tìm thấy sách']);
         }
 
-        return view('page.QuanLyMuonTra', $data);
+        $availableBooks = max(0, ($book->quantity ?? 0) - ($book->broken ?? 0) - ($book->borrowed_quantity ?? 0));
+        return response()->json(['quantity' => $availableBooks]);
     }
 
+
+    public function searchTransaction(Request $request)
+    {
+        return view('page.QuanLyMuonTra', [
+            'title' => 'Quản Lý Mượn Trả',
+            'titleWeb' => 'Quản Lý Thư Viện - Mượn Trả',
+            'transactions' => $this->borrowService->searchTransactions($request->input('query')),
+        ]);
+    }
+
+    public function handleAddTransaction(BorrowRequest $request)
+    {
+        $this->borrowService->handleAddTransaction($request->validated());
+
+        return redirect()->route('qlmt')->with(['type' => 'success', 'message' => 'Ghi mượn thành công!']);
+    }
+
+    public function extendBook(ExtendRequest $request)
+    {
+        $this->borrowService->extendBook($request->all());
+
+        return redirect()->route('qlmt')->with(['type' => 'success', 'message' => 'Gia hạn thành công!']);
+    }
+
+    public function returnBook(Request $request)
+    {
+        $save = $this->borrowService->returnBook($request->book_code_return, $request->return_quantity);
+
+        if (!$save) {
+            return redirect()->route('qlmt')->with([
+                'type' => 'error',
+                'message' => 'Trả sách không thành công!'
+            ]);
+        }
+
+        return redirect()->route('qlmt')->with([
+            'type' => 'success',
+            'message' => 'Trả sách thành công!'
+        ]);
+    }
 }

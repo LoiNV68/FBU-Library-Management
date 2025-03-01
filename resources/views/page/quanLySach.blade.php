@@ -30,13 +30,16 @@
             </button>
 
             <!-- Nút Làm mới -->
-            <button onclick="event.preventDefault(); window.location.reload();"
+            <button type="button" onclick="window.location.href='{{ route('qls') }}';"
                 class="bg-amber-500 text-white px-4 py-2 rounded-lg hover:bg-amber-600 transition duration-300 flex items-center gap-2">
                 <i class="fas fa-sync-alt"></i> <!-- Icon làm mới -->
                 <span>Làm mới</span>
             </button>
+
         </form>
     </div>
+
+    {{-- {{ dd(session()->all()) }} --}}
 
 
 
@@ -98,15 +101,16 @@
             {{ $books->links() }}
         </div>
     @endif
-
     <!-- Modal Sửa thông tin sách -->
     <div id="editBookModal" class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 hidden">
-        <div class="bg-white p-6 rounded-lg shadow-lg w-full max-w-2xl">
+        <div class="bg-white p-3 rounded-lg shadow-lg w-full max-w-2xl">
             <div class="flex justify-between items-center mb-4">
                 <h2 class="text-xl font-bold text-primary" id="formTitle">Thêm sách mới</h2>
                 <button id="closeModal" class="text-gray-600 text-2xl leading-none p-4">&times;</button>
             </div>
-            <form id="editBookForm" enctype="multipart/form-data" method="POST" action="{{ route('book.add') }}">
+            <form id="editBookForm" data-validate-update="{{ session('validateUpdate') }}"
+                data-validate-add="{{ session('validateAdd') }}" enctype="multipart/form-data" method="POST"
+                action="{{ route('book.update') }}">
                 @csrf
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div class="mb-4">
@@ -114,7 +118,8 @@
                         <input type="text" name="book_code" class="w-full border rounded-lg p-2"
                             value="{{ old('book_code') }}" required>
                         @error('book_code')
-                            <div style="color: #DB3030; font-size: 12.25px; margin-top: 4px; width: 100%;">
+                            <div class="error-message"
+                                style="color: #DB3030; font-size: 12.25px; margin-top: 4px; width: 100%;">
                                 {{ $message }}
                             </div>
                         @enderror
@@ -124,7 +129,8 @@
                         <input type="text" name="book_name" class="w-full border rounded-lg p-2"
                             value="{{ old('book_name') }}" required>
                         @error('book_name')
-                            <div style="color: #DB3030; font-size: 12.25px; margin-top: 4px; width: 100%;">
+                            <div class="error-message"
+                                style="color: #DB3030; font-size: 12.25px; margin-top: 4px; width: 100%;">
                                 {{ $message }}
                             </div>
                         @enderror
@@ -134,7 +140,8 @@
                         <input type="text" name="book_type" class="w-full border rounded-lg p-2"
                             value="{{ old('book_type') }}" required>
                         @error('book_type')
-                            <div style="color: #DB3030; font-size: 12.25px; margin-top: 4px; width: 100%;">
+                            <div class="error-message"
+                                style="color: #DB3030; font-size: 12.25px; margin-top: 4px; width: 100%;">
                                 {{ $message }}
                             </div>
                         @enderror
@@ -144,7 +151,8 @@
                         <input type="text" name="author" class="w-full border rounded-lg p-2"
                             value="{{ old('author') }}" required>
                         @error('author')
-                            <div style="color: #DB3030; font-size: 12.25px; margin-top: 4px; width: 100%;">
+                            <div class="error-message"
+                                style="color: #DB3030; font-size: 12.25px; margin-top: 4px; width: 100%;">
                                 {{ $message }}
                             </div>
                         @enderror
@@ -154,13 +162,14 @@
                         <input type="number" name="quantity" class="w-full border rounded-lg p-2"
                             value="{{ old('quantity') }}" required>
                         @error('username')
-                            <div style="color: #DB3030; font-size: 12.25px; margin-top: 4px; width: 100%;">
+                            <div class="error-message"
+                                style="color: #DB3030; font-size: 12.25px; margin-top: 4px; width: 100%;">
                                 {{ $message }}
                             </div>
                         @enderror
                     </div>
 
-                    <div class="mb-4">
+                    <div class="mb-4 book-lost hidden">
                         <label class="block text-gray-700">Sách mất hỏng</label>
                         <input type="number" name="broken" class="w-full border rounded-lg p-2"
                             value="{{ old('broken') }}">
@@ -218,16 +227,6 @@
 @endsection
 
 
-
-@if ($errors->any())
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const modal = document.getElementById("editBookModal");
-
-            modal.classList.remove("hidden");
-        });
-    </script>
-@endif
 @section('scripts')
     <script src="{{ asset('asset/js/bookManagement.js') }}"></script>
 @endsection

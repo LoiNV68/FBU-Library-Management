@@ -89,6 +89,36 @@ confirmDeleteModalBtn.on("click", function () {
     });
 });
 
+// check cấm trước khi cho mượn
+$(".loanBtn").on("click", function () {
+    const studentCode = $(this).data("student-code");
+
+    // Gọi API kiểm tra sinh viên có bị cấm không
+    $.ajax({
+        url: `/quan-ly-ban-doc/check-student-ban`,
+        method: "GET",
+        data: { student_code: studentCode },
+        success: function (response) {
+            if (response.ban) {
+                $("#banModal").removeClass("hidden"); // Hiển thị modal
+            } else {
+                // Nếu không bị cấm, chuyển hướng
+                console.log('22');
+                
+                window.location.href = `/quan-ly-muon-tra/transaction?student_code=${studentCode}`;
+            }
+        },
+        error: function () {
+            alert("Lỗi kiểm tra trạng thái sinh viên!");
+        },
+    });
+});
+
+// Đóng modal khi bấm nút "Đóng"
+$("#closeModal").on("click", function () {
+    $("#banModal").addClass("hidden");
+});
+
 $(window).on("click", function (e) {
     if (e.target === deleteBookModal[0]) {
         e.preventDefault();
