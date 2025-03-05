@@ -31,7 +31,7 @@ class BookRequest extends FormRequest
                 'string',
                 'max:255',
                 'regex:/^BK\d{4}$/',
-                $isUpdate ? 'exists:books,book_code' : 'unique:books,book_code'
+                $isUpdate ? 'unique:books,book_code' : 'exists:books,book_code'
             ],
             'book_name'   => ['required', 'string', 'max:255'],
             'book_type'   => ['required', 'string', 'max:255'],
@@ -75,7 +75,7 @@ class BookRequest extends FormRequest
     {
         $isUpdate = $this->route()->getName() === 'book.update';
         throw new HttpResponseException(
-            redirect()->back()
+            back()
                 ->withErrors($validator)
                 ->withInput()
                 ->with($isUpdate ? 'validateUpdate' : 'validateAdd', true)

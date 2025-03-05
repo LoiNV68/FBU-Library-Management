@@ -6,6 +6,7 @@
     {{ $titleWeb }}
 @endsection
 @section('content')
+
     <!-- Search Box -->
     <div class="mb-6">
         <form action="{{ route('book.search') }}" method="GET" class="flex items-center gap-2">
@@ -38,10 +39,6 @@
 
         </form>
     </div>
-
-    {{-- {{ dd(session()->all()) }} --}}
-
-
 
     <!-- Table -->
     <div class="overflow-x-auto bg-white rounded-lg shadow-md mb-4">
@@ -120,8 +117,7 @@
                         @error('book_code')
                             <div class="error-message"
                                 style="color: #DB3030; font-size: 12.25px; margin-top: 4px; width: 100%;">
-                                {{ $message }}
-                            </div>
+                                {{ $message }}</div>
                         @enderror
                     </div>
                     <div class="mb-4">

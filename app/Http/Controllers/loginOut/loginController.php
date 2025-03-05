@@ -25,7 +25,7 @@ class LoginController extends Controller
         // dd(Hash::make('123'));
         return view('login.login', compact('layout'));
     }
-
+  
     public function handleLogin(Request $request)
     {
         $validate = Validator::make($request->all(), [
