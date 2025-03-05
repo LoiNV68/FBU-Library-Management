@@ -24,7 +24,7 @@ $(function () {
         $modal.removeClass("hidden");
     }
     $addBookBtn.on("click", () => {
-        handleEditBook();
+        handleAddBook();
         // Reset Validate
         $errorMessages.text("");
     });

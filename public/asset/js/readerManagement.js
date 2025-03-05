@@ -28,6 +28,7 @@ $(document).on("click", ".banReaderBtn", function () {
 $(document).on("click", ".unbanReaderBtn", function () {
     $("#modalTitle").text("Gỡ cấm mượn");
     $("#modalContent").text("Bạn có muốn gỡ cấm mượn bạn đọc này không ?");
+    confirmDeleteModalBtn.text("Gỡ cấm");
     const row = $(this).closest("tr");
     currentStudent = row;
     const readerData = JSON.parse(row.attr("data-reader"));
