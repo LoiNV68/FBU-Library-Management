@@ -19,11 +19,15 @@ $(function () {
         // Thay đổi action của form thành route('book.add')
         $editForm.attr("action", "/quan-ly-sach/book/add");
         // Reset form
-       
+
         // Mở modal
         $modal.removeClass("hidden");
     }
-    $addBookBtn.on("click", handleAddBook);
+    $addBookBtn.on("click", () => {
+        handleEditBook();
+        // Reset Validate
+        $errorMessages.text("");
+    });
 
     if (validateAdd === 1) {
         handleAddBook();
@@ -35,8 +39,7 @@ $(function () {
         $inputBroken.removeClass("hidden");
         // Thay đổi action của form thành route('book.update')
         $editForm.attr("action", "/quan-ly-sach/book/update");
-        // Reset Validate
-        $errorMessages.text("");
+
         // Mở modal
         $modal.removeClass("hidden");
     }
@@ -46,7 +49,12 @@ $(function () {
         handleEditBook();
     }
     // Khi người dùng bấm vào nút sửa, cũng thực thi hàm
-    $editButtons.on("click", handleEditBook);
+    $editButtons.on("click", () => {
+        handleEditBook();
+        // Reset Validate
+        $errorMessages.text("");
+    });
+
     // Xử lý đóng modal
     [closeModal, cancelModal].forEach((button) => {
         $(button).on("click", () => {

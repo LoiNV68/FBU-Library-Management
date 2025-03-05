@@ -44,8 +44,7 @@ class BookManagementService
 
     public function createBook(BookRequest $request)
     {
-
-        $book = new BookModel($request->only(['book_code', 'book_name', 'book_type', 'author', 'quantity', 'description', 'broken']));
+        $book = new BookModel($request->only(['book_code', 'book_name', 'book_type', 'author', 'quantity', 'description', 'book_cover', 'broken']));
         $book->book_cover = $this->saveBookImage($request);
         return $book->save();
     }
@@ -54,7 +53,7 @@ class BookManagementService
     {
 
         $book = BookModel::where('book_code', $request->book_code)->firstOrFail();
-        $book->fill($request->only(['book_name', 'book_type', 'author', 'quantity', 'description', 'broken']));
+        $book->fill($request->only(['book_name', 'book_type', 'author', 'quantity', 'description', 'book_cover', 'broken']));
 
         if ($request->hasFile('book_cover')) {
             $book->book_cover = $this->saveBookImage($request);

@@ -28,14 +28,21 @@ class QuanLySachController extends Controller
 
     public function addBook(BookRequest $request)
     {
-        $this->bookService->createBook($request);
-        return redirect()->route('qls')->with(['type' => 'success', 'message' =>  'Thêm sách thành công!']);
+        $result = $this->bookService->createBook($request);
+        if ($result) {
+            return redirect()->route('qls')->with(['type' => 'success', 'message' =>  'Thêm sách thành công!']);
+        } else {
+            return redirect()->route('qls')->with(['type' => 'error', 'message' =>  'Thêm sách thất bại!']);
+        }
     }
     public function updateBook(BookRequest $request)
     {
-        $this->bookService->updateBook($request);
-
-        return redirect()->route('qls')->with(['type' => 'success', 'message' =>  'Sửa sách thành công!']);
+        $result =  $this->bookService->updateBook($request);
+        if ($result) {
+            return redirect()->route('qls')->with(['type' => 'success', 'message' =>  'Sửa sách thành công!']);
+        } else {
+            return redirect()->route('qls')->with(['type' => 'error', 'message' =>  'Sửa sách thất bại!']);
+        }
     }
 
 

@@ -8,7 +8,8 @@ use App\Http\Controllers\page\QuanLyMuonTraController;
 use App\Http\Controllers\page\QuanLySachController;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Route;
-
+use Illuminate\Http\Request;
+use Google\Client as GoogleClient;
 
 
 Route::get('/login', [LoginController::class, 'login'])->name('login');
@@ -55,4 +56,32 @@ Route::get('/check-db', function () {
 });
 Route::get('/refresh-csrf', function () {
     return response()->json(['token' => csrf_token()]);
+});
+
+
+// backup data
+Route::get('/google-auth', function () {
+    $client = new GoogleClient();
+    $client->setAuthConfig(storage_path('app/credentials.json'));
+    $client->addScope('https://www.googleapis.com/auth/drive.file');
+    $client->setRedirectUri(url('/oauth2callback'));
+    $client->setAccessType('offline');
+    $client->setPrompt('consent');
+
+    return redirect($client->createAuthUrl());
+});
+
+Route::get('/oauth2callback', function (Request $request) {
+    $client = new GoogleClient();
+    $client->setAuthConfig(storage_path('app/credentials.json'));
+    $client->addScope('https://www.googleapis.com/auth/drive.file');
+    $client->setRedirectUri(url('/oauth2callback'));
+
+    $token = $client->fetchAccessTokenWithAuthCode($request->code);
+    $refreshToken = $token['refresh_token'];
+
+    // Lưu Refresh Token vào file .env hoặc database
+    file_put_contents(storage_path('app/google_refresh_token.txt'), $refreshToken);
+
+    return 'Lấy Refresh Token thành công! Kiểm tra file google_refresh_token.txt';
 });
