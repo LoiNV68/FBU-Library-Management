@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests\borrow;
 
+use App\Rules\NotBanned;
 use Illuminate\Foundation\Http\FormRequest;
 
 class BorrowRequest extends FormRequest
@@ -15,11 +16,11 @@ class BorrowRequest extends FormRequest
     {
         return [
             'book_code'      => ['required', 'exists:books,book_code'],
-            'student_code'   => ['required', 'exists:students,student_code'],
+            'student_code'   => ['required', 'exists:students,student_code',  new NotBanned()],
             'quantity'       => ['required', 'integer', 'min:1'],
             'borrow_date'    => 'required|date',
             'return_date'    => 'required|date|after:borrow_date',
-      
+
         ];
     }
 
